@@ -8,7 +8,7 @@ export default function Home() {
     <div className="max-w-[1200px] mx-auto px-4">
       <Navbar />
       <Categories />
-      <div className="mt-12 flex gap-4">
+      <div className="mt-12 flex flex-col md:flex-row gap-4">
         <RecentPosts />
         <MostPopular />
       </div>
