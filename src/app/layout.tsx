@@ -1,8 +1,15 @@
+import Navbar from "@/components/Navbar";
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
+import Footer from "@/components/Footer";
+import Categories from "@/components/Categories";
+import MostPopular from "@/components/MostPopular";
 
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+});
 
 export const metadata: Metadata = {
   title: "Blog IT",
@@ -16,7 +23,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={poppins.className}>
+        <div className="max-w-[1200px] mx-auto px-4">
+          <Navbar />
+          <Categories />
+          <div className="mt-12 flex flex-col md:flex-row gap-4">
+            {children}
+            <MostPopular />
+          </div>
+          <Footer />
+        </div>
+      </body>
     </html>
   );
 }

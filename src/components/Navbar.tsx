@@ -17,7 +17,9 @@ export const links = [
 const Navbar = () => {
   return (
     <div className="h-12 flex items-center justify-between border-b-2">
-      <div className="font-semibold text-lg text-rose-700">Luminary</div>
+      <Link href="/" className="font-semibold text-lg text-rose-700">
+        Luminary
+      </Link>
 
       <div className="hidden sm:flex items-center gap-8">
         {links.map((link) => (
@@ -42,5 +44,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-// text-lg bg-slate-100 py-2 px-3 rounded-md hover:text-rose-800 transition
