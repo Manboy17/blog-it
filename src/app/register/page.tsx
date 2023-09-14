@@ -8,10 +8,9 @@ const page = () => {
   return (
     <div
       className="
-    w-full
     h-full
-    py-[150px]
-    px-[200px]
+    mx-auto
+    p-4
     flex
     flex-col
     gap-4
@@ -19,20 +18,15 @@ const page = () => {
     justify-center
   "
     >
-      <h1 className="text-xl font-semibold">First time here?</h1>
+      <h1 className="text-xl font-semibold">Welcome Back!</h1>
       <form
         className="
         flex
         flex-col
         gap-4
-        w-[400px]
+        w-full
       "
       >
-        <input
-          className="border-[1px] border-gray-800 rounded-lg p-4 outline-none"
-          type="text"
-          placeholder="Username"
-        />
         <input
           className="border-[1px] border-gray-800 rounded-lg p-4 outline-none"
           type="email"
@@ -52,12 +46,12 @@ const page = () => {
         items-center
         gap-4
         justify-center
-        w-[400px]
+        w-full
         border-[1px]
         border-black
         rounded-lg
         font-medium
-        text-base
+        text-sm
         cursor-pointer
       "
       >
@@ -72,12 +66,12 @@ const page = () => {
         items-center
         gap-4
         justify-center
-        w-[400px]
+        w-full
         border-[1px]
         border-black
         rounded-lg
         font-medium
-        text-base
+        text-sm
         cursor-pointer
       "
       >
@@ -85,8 +79,8 @@ const page = () => {
         Continue with github
       </div>
 
-      <div className="font-base text-sm">
-        Already have an acount?
+      <div className="font-base text-sm text-center">
+        Already have an account?
         <Link
           href="/login"
           className="pl-2 text-gray-700 hover:underline cursor-pointer transition"
