@@ -19,7 +19,7 @@ const page = () => {
     justify-center
   "
     >
-      <h1 className="text-xl font-semibold">Welcome Back!</h1>
+      <h1 className="text-xl font-semibold">First time here?</h1>
       <form
         className="
         flex
@@ -28,6 +28,11 @@ const page = () => {
         w-[400px]
       "
       >
+        <input
+          className="border-[1px] border-gray-800 rounded-lg p-4 outline-none"
+          type="text"
+          placeholder="Username"
+        />
         <input
           className="border-[1px] border-gray-800 rounded-lg p-4 outline-none"
           type="email"
@@ -81,12 +86,12 @@ const page = () => {
       </div>
 
       <div className="font-base text-sm">
-        Do not have an account?
+        Already have an acount?
         <Link
-          href="/register"
+          href="/login"
           className="pl-2 text-gray-700 hover:underline cursor-pointer transition"
         >
-          Register here!
+          Log in here!
         </Link>
       </div>
     </div>
