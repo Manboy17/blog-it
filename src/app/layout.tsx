@@ -27,9 +27,8 @@ export default function RootLayout({
         <div className="max-w-[1200px] mx-auto px-4">
           <Navbar />
           <Categories />
-          <div className="mt-12 flex flex-col md:flex-row gap-4">
+          <div className="mt-12 flex flex-col md:flex-row gap-2">
             {children}
-            <MostPopular />
           </div>
           <Footer />
         </div>
