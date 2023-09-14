@@ -18,7 +18,7 @@ const page = () => {
     justify-center
   "
     >
-      <h1 className="text-xl font-semibold">First time here?</h1>
+      <h1 className="text-xl font-semibold">Welcome Back!</h1>
       <form
         className="
         flex
@@ -27,11 +27,6 @@ const page = () => {
         w-full
       "
       >
-        <input
-          type="text"
-          placeholder="Username"
-          className="border-[1px] border-gray-800 rounded-lg p-4 outline-none"
-        />
         <input
           className="border-[1px] border-gray-800 rounded-lg p-4 outline-none"
           type="email"
