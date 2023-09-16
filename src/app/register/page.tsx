@@ -1,10 +1,23 @@
 "use client";
 
+import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import { GrGithub } from "react-icons/gr";
 
 const page = () => {
+  const { status } = useSession();
+  const router = useRouter();
+
+  if (status === "authenticated") {
+    router.push("/");
+  }
+
+  if (status === "loading") {
+    return <div className="text-xl">Loading...</div>;
+  }
+
   return (
     <div
       className="
@@ -45,6 +58,7 @@ const page = () => {
       </form>
 
       <div
+        onClick={() => signIn("google")}
         className="
         p-4
         flex
@@ -65,6 +79,7 @@ const page = () => {
       </div>
 
       <div
+        onClick={() => signIn("github")}
         className="
         p-4
         flex
