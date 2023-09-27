@@ -1,4 +1,7 @@
-import React from "react";
+"use client";
+
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 export interface CategoryProps {
   title: string;
@@ -7,11 +10,23 @@ export interface CategoryProps {
 }
 
 const Category: React.FC<CategoryProps> = ({ title, slug }) => {
-  console.log(slug);
+  const params = useSearchParams();
+  const catParams = params.get("cat");
   return (
-    <div className={`${slug} p-2 rounded-md font-medium cursor-pointer`}>
+    <Link
+      href={`?cat=${slug}`}
+      className={`
+        p-2 
+        rounded-md 
+        font-medium 
+        cursor-pointer
+      hover:text-rose-700 
+        transition
+        ${slug === catParams ? "text-rose-700" : ""}
+      `}
+    >
       {title}
-    </div>
+    </Link>
   );
 };
 
