@@ -9,6 +9,7 @@ export const GET = async (
 
   const post = await prisma.post.findUnique({
     where: { slug },
+    include: { user: true },
   });
 
   try {

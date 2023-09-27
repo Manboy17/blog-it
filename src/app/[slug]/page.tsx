@@ -35,15 +35,25 @@ const page: React.FC<PostProps> = async ({ params }) => {
         </div>
         <div className="flex items-center justify-between pt-3">
           <div className="flex items-center gap-2">
-            <Image
-              src="/placeholder.jpg"
-              alt="user"
-              width={30}
-              height={30}
-              className="rounded-full"
-            />
+            {post?.user?.image ? (
+              <Image
+                src={post.user.image}
+                alt="user"
+                width={30}
+                height={30}
+                className="rounded-full"
+              />
+            ) : (
+              <Image
+                src="/placeholder.jpg"
+                alt="user"
+                width={30}
+                height={30}
+                className="rounded-full"
+              />
+            )}
             <span className="text-gray-500 font-medium text-sm">
-              Denys Hlushchenko
+              {post.user.name}
             </span>
           </div>
           <div className="flex items-center gap-2">
