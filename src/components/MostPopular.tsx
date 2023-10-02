@@ -3,7 +3,7 @@ import PopularEditors from "./PopularEditors";
 const MostPopular = () => {
   return (
     <div className="w-full md:w-1/3 p-4">
-      <div className="text-sm font-light text-gray-700">🔥 Here's hot</div>
+      <div className="text-sm font-light text-gray-700">🔥 Here is hot</div>
       <div className="text-lg font-semibold pb-2">Most Popular</div>
       <div className="py-4 cursor-pointer">
         <div className="p-1 bg-green-500 text-white max-w-fit rounded-lg text-xs">
