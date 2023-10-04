@@ -2,21 +2,24 @@
 
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { GrGithub } from "react-icons/gr";
 
-const page = () => {
+const Login = () => {
   const { status } = useSession();
   const router = useRouter();
 
-  if (status === "authenticated") {
-    router.push("/");
-  }
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/");
+    }
+  }, [status, router]);
 
   if (status === "loading") {
     return <div className="text-xl">Loading...</div>;
   }
-
+  1;
   return (
     <div
       className="
@@ -79,4 +82,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Login;

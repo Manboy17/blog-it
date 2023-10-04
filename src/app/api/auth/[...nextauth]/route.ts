@@ -1,11 +1,11 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions, getServerSession } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import prisma from "@/utils/prismadb";
 
-const handler = NextAuth({
+const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
@@ -17,6 +17,9 @@ const handler = NextAuth({
       clientSecret: process.env.GITHUB_SECRET as string,
     }),
   ],
-});
+};
 
+const handler = NextAuth(authOptions);
 export { handler as POST, handler as GET };
+
+export const getSessionAuth = () => getServerSession(authOptions);

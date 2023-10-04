@@ -24,9 +24,9 @@ const getData = async (slug: string) => {
 const page: React.FC<PostProps> = async ({ params }) => {
   const { slug } = params;
   const post = await getData(slug);
-  console.log(post);
+
   return (
-    <div className="flex flex-col md:flex-row gap-2">
+    <div className="flex flex-col md:flex-row w-full">
       <div className="w-full md:w-2/3 shadow p-4">
         <div className="relative w-full h-[450px]">
           {!post.img && (
@@ -67,7 +67,7 @@ const page: React.FC<PostProps> = async ({ params }) => {
           <h1 className="font-semibold text-black text-2xl">{post.title}</h1>
           <p className="text-sm text-gray-500">{post.desc}</p>
         </div>
-        <Components />
+        <Components postSlug={slug} />
       </div>
       <MostPopular />
     </div>

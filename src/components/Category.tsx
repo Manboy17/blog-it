@@ -14,7 +14,7 @@ const Category: React.FC<CategoryProps> = ({ title, slug }) => {
   const catParams = params.get("cat");
   return (
     <Link
-      href={`?cat=${slug}`}
+      href={`/?cat=${slug}`}
       className={`
         p-2 
         rounded-md 
