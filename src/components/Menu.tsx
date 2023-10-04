@@ -5,9 +5,11 @@ import { AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
 import { links } from "./Navbar";
 import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
 
 const Menu = () => {
   const [open, setOpen] = useState(false);
+  const session = useSession();
   return (
     <div className="block sm:hidden">
       {!open ? (
@@ -49,12 +51,21 @@ const Menu = () => {
               {link.text}
             </Link>
           ))}
-          <Link
-            href="/login"
-            className="text-lg  py-2 px-3 rounded-md hover:text-rose-800 transition font-normal"
-          >
-            Log in
-          </Link>
+          {session.status === "authenticated" ? (
+            <div
+              onClick={() => signOut()}
+              className="text-lg  py-2 px-3 rounded-md hover:text-rose-800 transition font-normal"
+            >
+              Log out
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className="text-lg  py-2 px-3 rounded-md hover:text-rose-800 transition font-normal"
+            >
+              Log in
+            </Link>
+          )}
         </div>
       )}
     </div>

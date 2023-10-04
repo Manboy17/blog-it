@@ -1,9 +1,9 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { useState } from "react";
 import useSWR from "swr";
+import { AiOutlineDelete } from "react-icons/ai";
 
 interface CommentProps {
   id: string;
@@ -32,6 +32,7 @@ const fetcher = async (url: string) => {
 
 const Components: React.FC<Props> = ({ postSlug }) => {
   const [desc, setDesc] = useState("");
+  const [error, setError] = useState("");
   const session = useSession();
 
   const { data, mutate, isLoading } = useSWR(
@@ -39,11 +40,26 @@ const Components: React.FC<Props> = ({ postSlug }) => {
     fetcher
   );
 
+  console.log(data);
+
   const handleSubmit = async () => {
-    await fetch("/api/comments", {
-      method: "POST",
+    if (session.status === "authenticated") {
+      await fetch("/api/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ desc, postSlug }),
+      });
+      mutate();
+    } else {
+      setError("You must be logged in to comment!");
+    }
+  };
+
+  const handleClick = async (id: string) => {
+    await fetch("api/comments", {
+      method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ desc, postSlug }),
+      body: JSON.stringify({ id }),
     });
     mutate();
   };
@@ -66,14 +82,11 @@ const Components: React.FC<Props> = ({ postSlug }) => {
         </button>
       </div>
 
-      <div className="py-6">
-        {session.status === "unauthenticated" ? (
-          <p>
-            <Link href="/login" className="text-rose-700">
-              Login
-            </Link>{" "}
-            to read and leave a comment!
-          </p>
+      {error && <span className="text-red-700">{error}</span>}
+
+      <div className="pt-6">
+        {!data ? (
+          <h1>No comments yet!</h1>
         ) : (
           <>
             <div className="font-bold text-base text-black py-2 border-b-[2px]">
@@ -81,15 +94,26 @@ const Components: React.FC<Props> = ({ postSlug }) => {
             </div>
             <div>
               {data?.map((comment: CommentProps) => (
-                <div className="py-4 w-full" key={comment.id}>
-                  <div className="text-black font-medium text-sm flex items-center gap-2">
-                    {comment.user.name}
-                    <span className="text-gray-500 font-medium">
-                      on {comment.createdAt.toString().substring(0, 10)}
-                    </span>
+                <div
+                  className="py-3 w-full flex items-center justify-between"
+                  key={comment.id}
+                >
+                  <div className="flex flex-col items-start">
+                    <div className="text-black font-medium text-sm flex items-center gap-2">
+                      {comment.user.name}
+                      <span className="text-gray-500 font-medium">
+                        on {comment.createdAt.toString().substring(0, 10)}
+                      </span>
+                    </div>
+                    <div className="text-sm text-gray-500 font-light">
+                      {comment.desc}
+                    </div>
                   </div>
-                  <div className="text-sm text-gray-500 font-light">
-                    {comment.desc}
+                  <div
+                    className="cursor-pointer text-rose-700"
+                    onClick={() => handleClick(comment.id)}
+                  >
+                    <AiOutlineDelete size={20} />
                   </div>
                 </div>
               ))}

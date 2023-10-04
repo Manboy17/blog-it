@@ -49,3 +49,20 @@ export const POST = async (req: NextRequest) => {
     );
   }
 };
+
+// Delete a post
+export const DELETE = async (req: NextResponse) => {
+  const body = await req.json();
+
+  try {
+    const comment = await prisma.comment.delete({
+      where: { id: body.id },
+    });
+    return new NextResponse(JSON.stringify(comment), { status: 200 });
+  } catch (error) {
+    return new NextResponse(
+      JSON.stringify({ message: "Something went wrong!" }),
+      { status: 500 }
+    );
+  }
+};
