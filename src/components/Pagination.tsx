@@ -1,22 +1,37 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useCallback } from "react";
 
 interface PaginationProps {
   page: number;
   hasPrev: boolean;
   hasNext: boolean;
+  cat: string;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ page, hasPrev, hasNext }) => {
+const Pagination: React.FC<PaginationProps> = ({
+  page,
+  hasPrev,
+  hasNext,
+  cat,
+}) => {
   const router = useRouter();
+
+  const setPage = useCallback(
+    (page: number) => {
+      router.push(`?page=${page}`);
+    },
+    [router]
+  );
+
   return (
     <div className="flex items-center justify-between pt-5">
       <button
         className={`py-1 px-3 bg-rose-700 text-white rounded-md ${
           !hasPrev ? "opacity-60 cursor-not-allowed" : ""
         }`}
-        onClick={() => hasPrev && router.push(`?page=${page - 1}`)}
+        onClick={() => hasPrev && setPage(page - 1)}
       >
         Back
       </button>
@@ -24,7 +39,7 @@ const Pagination: React.FC<PaginationProps> = ({ page, hasPrev, hasNext }) => {
         className={`py-1 px-3 bg-rose-700 text-white rounded-md ${
           !hasNext ? "opacity-60 cursor-not-allowed" : ""
         }`}
-        onClick={() => hasNext && router.push(`?page=${page + 1}`)}
+        onClick={() => hasNext && setPage(page + 1)}
       >
         Next
       </button>

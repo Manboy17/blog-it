@@ -63,7 +63,7 @@ const RecentPosts: React.FC<RecentPostsProps> = async ({ page, cat }) => {
               >
                 <div className="relative w-full md:w-[50%] h-[300px]">
                   <Image
-                    src="/text.jpeg"
+                    src={post.img || ""}
                     alt="text"
                     fill
                     className="object-cover"
@@ -78,7 +78,9 @@ const RecentPosts: React.FC<RecentPostsProps> = async ({ page, cat }) => {
                   </div>
 
                   <div className="text-xl font-semibold">{post.title}</div>
-                  <p className="text-gray-600 py-2 text-sm">{post.desc}</p>
+                  <p className="text-gray-600 py-4 text-sm line-clamp-1">
+                    {post.desc}
+                  </p>
 
                   <Link
                     href={`/${post.slug}`}
@@ -90,7 +92,12 @@ const RecentPosts: React.FC<RecentPostsProps> = async ({ page, cat }) => {
               </div>
             ))}
           </div>
-          <Pagination page={page} hasPrev={hasPrev} hasNext={hasNext} />
+          <Pagination
+            page={page}
+            hasPrev={hasPrev}
+            hasNext={hasNext}
+            cat={cat}
+          />
         </>
       )}
     </div>

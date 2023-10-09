@@ -6,6 +6,7 @@ import { AiFillCalendar } from "react-icons/ai";
 interface PostProps {
   params: {
     slug: string;
+    views: number;
   };
 }
 
@@ -29,8 +30,8 @@ const page: React.FC<PostProps> = async ({ params }) => {
     <div className="flex flex-col md:flex-row w-full">
       <div className="w-full md:w-2/3 shadow p-4">
         <div className="relative w-full h-[450px]">
-          {!post.img && (
-            <Image src="/text.jpeg" alt="image" fill className="object-cover" />
+          {post.img && (
+            <Image src={post.img} alt="image" fill className="object-cover" />
           )}
         </div>
         <div className="flex items-center justify-between pt-3">

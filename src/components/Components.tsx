@@ -40,8 +40,6 @@ const Components: React.FC<Props> = ({ postSlug }) => {
     fetcher
   );
 
-  console.log(data);
-
   const handleSubmit = async () => {
     if (session.status === "authenticated") {
       await fetch("/api/comments", {
@@ -50,6 +48,7 @@ const Components: React.FC<Props> = ({ postSlug }) => {
         body: JSON.stringify({ desc, postSlug }),
       });
       mutate();
+      setDesc("");
     } else {
       setError("You must be logged in to comment!");
     }
