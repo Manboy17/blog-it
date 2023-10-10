@@ -10,7 +10,7 @@ import {
 import { useSession } from "next-auth/react";
 import error from "next/error";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { AiFillFileImage } from "react-icons/ai";
 
 const Dashboard = () => {
@@ -22,7 +22,13 @@ const Dashboard = () => {
   const storage = getStorage(app);
   const router = useRouter();
   const session = useSession();
-  const [status, setStatus] = useState("");
+  const [state, setState] = useState("");
+  const [progress, setProgress] = useState(0);
+
+  const status = useMemo(() => {
+    if (state === "paused") return "Upload is paused";
+    return `Upload is ${progress.toFixed(2)}% done`;
+  }, [progress, state]);
 
   if (session.status === "unauthenticated") {
     router.push("/");
@@ -37,16 +43,10 @@ const Dashboard = () => {
       const uploadTask = uploadBytesResumable(storageRef, file);
 
       uploadTask.on("state_changed", (snapshot) => {
-        const progress = (
-          (snapshot.bytesTransferred / snapshot.totalBytes) *
-          100
-        ).toFixed(2);
-        setStatus("Upload is " + progress + "% done");
-        switch (snapshot.state) {
-          case "paused":
-            setStatus("Upload is paused");
-            break;
-        }
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgress(progress);
+        setState(snapshot.state);
       });
       uploadTask.then(() => {
         console.log("upload complete");
@@ -66,27 +66,26 @@ const Dashboard = () => {
       .replace(/[\s_-]+/g, "-")
       .replace(/^-+|-+$/g, "");
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (status === "Upload is 100% done") {
-      const res = await fetch("/api/posts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          desc: content,
-          img: media,
-          slug: convertTitleToSlug(title),
-          catSlug: category.toLowerCase() || "experience",
-        }),
-      });
-      router.push("/");
-    } else {
-      setError("Please upload an image");
+    if (progress !== 100) {
+      return setError("Please upload an image");
     }
-  };
+    const res = await fetch("/api/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title,
+        desc: content,
+        img: media,
+        slug: convertTitleToSlug(title),
+        catSlug: category.toLowerCase() || "experience",
+      }),
+    });
+    router.push("/");
+  }, [category, content, media, progress, router, title]);
 
   return (
     <div className="flex items-center justify-center w-full p-4">
