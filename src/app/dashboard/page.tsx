@@ -8,8 +8,8 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { useSession } from "next-auth/react";
+import error from "next/error";
 import { useRouter } from "next/navigation";
-import router from "next/router";
 import { useState } from "react";
 import { AiFillFileImage } from "react-icons/ai";
 
@@ -18,9 +18,11 @@ const Dashboard = () => {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [content, setContent] = useState("");
+  const [error, setError] = useState("");
   const storage = getStorage(app);
   const router = useRouter();
   const session = useSession();
+  const [status, setStatus] = useState("");
 
   if (session.status === "unauthenticated") {
     router.push("/");
@@ -35,15 +37,14 @@ const Dashboard = () => {
       const uploadTask = uploadBytesResumable(storageRef, file);
 
       uploadTask.on("state_changed", (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
+        const progress = (
+          (snapshot.bytesTransferred / snapshot.totalBytes) *
+          100
+        ).toFixed(2);
+        setStatus("Upload is " + progress + "% done");
         switch (snapshot.state) {
           case "paused":
-            console.log("Upload is paused");
-            break;
-          case "running":
-            console.log("Upload is running");
+            setStatus("Upload is paused");
             break;
         }
       });
@@ -67,20 +68,24 @@ const Dashboard = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await fetch("/api/posts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title,
-        desc: content,
-        img: media,
-        slug: convertTitleToSlug(title),
-        catSlug: category.toLowerCase() || "experience",
-      }),
-    });
-    router.push("/");
+    if (status === "Upload is 100% done") {
+      const res = await fetch("/api/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          desc: content,
+          img: media,
+          slug: convertTitleToSlug(title),
+          catSlug: category.toLowerCase() || "experience",
+        }),
+      });
+      router.push("/");
+    } else {
+      setError("Please upload an image");
+    }
   };
 
   return (
@@ -116,6 +121,7 @@ const Dashboard = () => {
           >
             <AiFillFileImage size={20} />
             <span>Choose the image for the post</span>
+            {status && <span>{status}</span>}
           </label>
           <textarea
             className="p-2 placeholder:text-sm border-[1px] rounded-lg border-gray-500"
@@ -124,6 +130,7 @@ const Dashboard = () => {
             cols={30}
             onChange={(e) => setContent(e.target.value)}
           ></textarea>
+          {error && <span className="text-red-600">{error}</span>}
           <button className="w-full bg-blue-400 text-white font-medium py-2 px-4 rounded-md">
             Submit
           </button>
