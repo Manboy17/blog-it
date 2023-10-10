@@ -20,7 +20,6 @@ const Pagination: React.FC<PaginationProps> = ({
 
   const setPage = useCallback(
     (page: number) => {
-      console.log(cat);
       if (cat) {
         router.push(`?page=${page}&cat=${cat}`);
       } else {

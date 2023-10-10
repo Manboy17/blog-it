@@ -21,7 +21,7 @@ interface Props {
 const fetcher = async (url: string) => {
   const res = await fetch(url);
 
-  const data = await res.json();
+  const data: CommentProps[] = await res.json();
 
   if (!res.ok) {
     throw new Error("Failed!");
@@ -84,7 +84,7 @@ const Components: React.FC<Props> = ({ postSlug }) => {
       {error && <span className="text-red-700">{error}</span>}
 
       <div className="pt-6">
-        {!data ? (
+        {data?.length === 0 ? (
           <h1>No comments yet!</h1>
         ) : (
           <>
@@ -92,7 +92,7 @@ const Components: React.FC<Props> = ({ postSlug }) => {
               Comments
             </div>
             <div>
-              {data?.map((comment: CommentProps) => (
+              {data?.map((comment) => (
                 <div
                   className="py-3 w-full flex items-center justify-between"
                   key={comment.id}
