@@ -1,6 +1,7 @@
+import type { Metadata } from "next";
+import clsx from "clsx";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
-import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import Footer from "@/components/Footer";
 import Categories from "@/components/Categories";
@@ -23,18 +24,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={poppins.className}>
-        <AuthProvider>
-          <div className="max-w-[1200px] mx-auto px-4">
-            <Navbar />
-            <Categories />
-            <div className="mt-12 flex flex-col md:flex-row gap-2">
-              {children}
-            </div>
-            <Footer />
+      <AuthProvider>
+        <body
+          className={clsx(
+            poppins.className,
+            "min-h-screen max-w-[1200px] mx-auto px-4 flex flex-col"
+          )}
+        >
+          <Navbar />
+          <Categories />
+          <div className="mt-12 flex flex-col md:flex-row gap-2 flex-grow">
+            {children}
           </div>
-        </AuthProvider>
-      </body>
+          <Footer />
+        </body>
+      </AuthProvider>
     </html>
   );
 }

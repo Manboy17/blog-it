@@ -1,16 +1,20 @@
 import Link from "next/link";
 import { BiCategory } from "react-icons/bi";
 
-interface MostPopularProps {
+interface Post {
   id?: string;
-  createdAt?: string;
+  createdAt?: string
   slug?: string;
-  desc?: string;
+  desc?: string
   userEmail?: string;
 }
 
-const getData = async () => {
-  const res = await fetch(`http://localhost:3000/api/posts`, {
+interface PopularPostsResponse {
+  posts: Post[];
+}
+
+const getData = async (): Promise<PopularPostsResponse> => {
+  const res = await fetch(`http://localhost:3000/api/posts/popular`, {
     cache: "no-store",
   });
 
@@ -21,12 +25,10 @@ const getData = async () => {
   return res.json();
 };
 
-const MostPopular: React.FC<MostPopularProps> = async () => {
+const MostPopular: React.FC = async () => {
   const data = await getData();
 
-  const res = data.posts
-    .sort((a: any, b: any) => b.views - a.views)
-    .slice(0, 3);
+  const res = data.posts;
 
   return (
     <div className="w-full md:w-1/3 p-4">
