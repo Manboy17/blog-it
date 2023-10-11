@@ -51,16 +51,28 @@ const Components: React.FC<Props> = ({ postSlug }) => {
       setDesc("");
     } else {
       setError("You must be logged in to comment!");
+
+      setTimeout(() => {
+        setError("");
+      }, 2000);
     }
   };
 
   const handleClick = async (id: string) => {
-    await fetch("/api/comments", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-    mutate();
+    if (session.status === "authenticated") {
+      await fetch("/api/comments", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      mutate();
+    } else {
+      setError("You must be logged in to delete a comment!");
+
+      setTimeout(() => {
+        setError("");
+      }, 2000);
+    }
   };
 
   return (
@@ -80,8 +92,6 @@ const Components: React.FC<Props> = ({ postSlug }) => {
           Submit
         </button>
       </div>
-
-      {error && <span className="text-red-700">{error}</span>}
 
       <div className="pt-6">
         {data?.length === 0 ? (
@@ -116,6 +126,7 @@ const Components: React.FC<Props> = ({ postSlug }) => {
                   </div>
                 </div>
               ))}
+              {error && <span className="text-red-700">{error}</span>}
             </div>
           </>
         )}
