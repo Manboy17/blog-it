@@ -36,7 +36,7 @@ const Components: React.FC<Props> = ({ postSlug }) => {
   const session = useSession();
 
   const { data, mutate, isLoading } = useSWR(
-    `http://localhost:3000/api/comments?postSlug=${postSlug}`,
+    `/api/comments?postSlug=${postSlug}`,
     fetcher
   );
 
@@ -55,7 +55,7 @@ const Components: React.FC<Props> = ({ postSlug }) => {
   };
 
   const handleClick = async (id: string) => {
-    await fetch("api/comments", {
+    await fetch("/api/comments", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),

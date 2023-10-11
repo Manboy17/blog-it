@@ -1,19 +1,8 @@
-import Category, { CategoryProps } from "./Category";
-
-const getData = async () => {
-  const res = await fetch("http://localhost:3000/api/categories", {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
-};
+import Category from "./Category";
+import prisma from "@/utils/prismadb";
 
 const Categories = async () => {
-  const categories: CategoryProps[] = await getData();
+  const categories = await prisma.category.findMany();
 
   return (
     <div
@@ -27,7 +16,7 @@ const Categories = async () => {
     "
     >
       {categories.map((cat) => (
-        <Category title={cat.title} key={cat._id} slug={cat.slug} />
+        <Category title={cat.title} key={cat.id} slug={cat.slug} />
       ))}
     </div>
   );

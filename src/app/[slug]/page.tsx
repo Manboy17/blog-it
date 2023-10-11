@@ -2,6 +2,7 @@ import Components from "@/components/Components";
 import MostPopular from "@/components/MostPopular";
 import Image from "next/image";
 import { AiFillCalendar } from "react-icons/ai";
+import prisma from "@/utils/prismadb";
 
 interface PostProps {
   params: {
@@ -10,21 +11,13 @@ interface PostProps {
   };
 }
 
-const getData = async (slug: string) => {
-  const res = await fetch(`http://localhost:3000/api/posts/by-slug/${slug}`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
-};
-
 const page: React.FC<PostProps> = async ({ params }) => {
   const { slug } = params;
-  const post = await getData(slug);
+  const post = await prisma.post.update({
+    where: { slug },
+    data: { views: { increment: 1 } },
+    include: { user: true },
+  });
 
   return (
     <div className="flex flex-col md:flex-row w-full">

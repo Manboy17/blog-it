@@ -1,34 +1,16 @@
 import Link from "next/link";
 import { BiCategory } from "react-icons/bi";
-
-interface Post {
-  id?: string;
-  createdAt?: string;
-  slug?: string;
-  desc?: string;
-  userEmail?: string;
-}
-
-interface PopularPostsResponse {
-  posts: Post[];
-}
-
-const getData = async (): Promise<PopularPostsResponse> => {
-  const res = await fetch(`http://localhost:3000/api/posts/popular`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
-};
+import prisma from "@/utils/prismadb";
 
 const MostPopular: React.FC = async () => {
-  const data = await getData();
+  const data = await prisma.post.findMany({
+    take: 3,
+    orderBy: {
+      views: "desc",
+    },
+  });
 
-  const res = data.posts;
+  const res = data;
 
   return (
     <div className="w-full md:w-1/3 p-4">
