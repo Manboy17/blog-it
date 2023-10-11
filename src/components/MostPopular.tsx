@@ -3,9 +3,9 @@ import { BiCategory } from "react-icons/bi";
 
 interface Post {
   id?: string;
-  createdAt?: string
+  createdAt?: string;
   slug?: string;
-  desc?: string
+  desc?: string;
   userEmail?: string;
 }
 

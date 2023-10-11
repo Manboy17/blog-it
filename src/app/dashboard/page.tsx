@@ -8,7 +8,6 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { useSession } from "next-auth/react";
-import error from "next/error";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 import { AiFillFileImage } from "react-icons/ai";
@@ -66,26 +65,29 @@ const Dashboard = () => {
       .replace(/[\s_-]+/g, "-")
       .replace(/^-+|-+$/g, "");
 
-  const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (progress !== 100) {
-      return setError("Please upload an image");
-    }
-    const res = await fetch("/api/posts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title,
-        desc: content,
-        img: media,
-        slug: convertTitleToSlug(title),
-        catSlug: category.toLowerCase() || "experience",
-      }),
-    });
-    router.push("/");
-  }, [category, content, media, progress, router, title]);
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      if (progress !== 100) {
+        return setError("Please upload an image");
+      }
+      const res = await fetch("/api/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          desc: content,
+          img: media,
+          slug: convertTitleToSlug(title),
+          catSlug: category.toLowerCase() || "experience",
+        }),
+      });
+      router.push("/");
+    },
+    [category, content, media, progress, router, title]
+  );
 
   return (
     <div className="flex items-center justify-center w-full p-4">

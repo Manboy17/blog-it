@@ -50,7 +50,7 @@ export const POST = async (req: NextRequest) => {
 };
 
 // Delete a post
-export const DELETE = async (req: NextResponse) => {
+export const DELETE = async (req: NextRequest) => {
   const body = await req.json();
 
   try {

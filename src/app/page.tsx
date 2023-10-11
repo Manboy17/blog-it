@@ -6,7 +6,7 @@ interface Props {
   searchParams: Record<string, string>;
 }
 
-const Home: NextPage<Props> = ({ searchParams, params }) => {
+const Home: NextPage<Props> = ({ searchParams }) => {
   const page = Number(searchParams.page ?? 1);
   const { cat } = searchParams;
   return (

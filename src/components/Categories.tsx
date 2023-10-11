@@ -22,7 +22,7 @@ const Categories = async () => {
         items-center
         justify-between
         gap-8
-        pt-10
+        py-10
         overflow-x-auto
     "
     >

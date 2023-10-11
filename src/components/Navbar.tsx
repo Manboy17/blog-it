@@ -20,7 +20,7 @@ export const links = [
 const Navbar = () => {
   const { status } = useSession();
   return (
-    <div className="h-12 flex items-center justify-between border-b-2">
+    <div className="h-12 p-3 flex items-center justify-between border-b-2">
       <Link href="/" className="font-semibold text-lg text-rose-700">
         Luminary
       </Link>
