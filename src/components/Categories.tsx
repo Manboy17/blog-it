@@ -11,8 +11,9 @@ const Categories = async () => {
         items-center
         justify-between
         gap-8
-        py-10
         overflow-x-auto
+        py-10
+        overflow-hidden
     "
     >
       {categories.map((cat) => (
